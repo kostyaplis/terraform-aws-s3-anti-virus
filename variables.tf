@@ -10,31 +10,10 @@ variable "name_update" {
   type        = string
 }
 
-variable "filter_prefixes" {
-  default     = []
-  description = "Filter object prefixes to trigger AV scan"
-  type        = list(string)
-}
 variable "cloudwatch_logs_retention_days" {
   default     = 90
   description = "Number of days to keep logs in AWS CloudWatch."
   type        = string
-}
-
-variable "lambda_s3_bucket" {
-  description = "The name of the S3 bucket used to store the Lambda builds."
-  type        = string
-}
-
-variable "lambda_version" {
-  description = "The version the Lambda function to deploy."
-  type        = string
-}
-
-variable "lambda_package" {
-  description = "The name of the lambda package. Used for a directory tree and zip file."
-  type        = string
-  default     = "anti-virus"
 }
 
 variable "memory_size" {
@@ -51,6 +30,12 @@ variable "av_update_minutes" {
 
 variable "av_scan_buckets" {
   description = "A list of S3 bucket names to scan for viruses."
+  type        = list(string)
+}
+
+variable "av_filter_prefixes" {
+  default     = []
+  description = "Filter object prefixes to trigger AV scan"
   type        = list(string)
 }
 
