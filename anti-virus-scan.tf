@@ -1,7 +1,3 @@
-local {
-
-}
-
 #
 # Lambda Function: Anti-Virus Scanning
 #
@@ -177,8 +173,8 @@ resource "aws_lambda_function" "main_scan" {
 
   description = "Scans s3 objects with clamav for viruses."
 
-  s3_bucket = var.lambda_s3_bucket
-  s3_key    = "${var.lambda_package}/${var.lambda_version}/${var.lambda_package}.zip"
+  filename         = "./files/lambda.zip"
+  source_code_hash = filebase64sha256("./files/lambda.zip")
 
   function_name = var.name_scan
   role          = aws_iam_role.main_scan.arn
