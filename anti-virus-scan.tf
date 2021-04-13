@@ -1,3 +1,7 @@
+local {
+
+}
+
 #
 # Lambda Function: Anti-Virus Scanning
 #
@@ -130,10 +134,20 @@ resource "aws_s3_bucket_notification" "main_scan" {
   count  = length(var.av_scan_buckets)
   bucket = element(data.aws_s3_bucket.main_scan.*.id, count.index)
 
-  lambda_function {
-    id                  = element(data.aws_s3_bucket.main_scan.*.id, count.index)
-    lambda_function_arn = aws_lambda_function.main_scan.arn
-    events              = ["s3:ObjectCreated:*"]
+  # lambda_function {
+  #   id                  = element(data.aws_s3_bucket.main_scan.*.id, count.index)
+  #   lambda_function_arn = aws_lambda_function.main_scan.arn
+  #   events              = ["s3:ObjectCreated:*"]
+  # }
+
+  dynamic "lambda_function" {
+    for_each = length(var.filter_prefixes) > 0 ? toset(var.filter_prefixes) : [""]
+    content {
+      id                  = element(data.aws_s3_bucket.main_scan.*.id, count.index)
+      lambda_function_arn = aws_lambda_function.main_scan.arn
+      events              = ["s3:ObjectCreated:*"]
+      filter_prefix       = setting.key
+    }
   }
 }
 

@@ -10,6 +10,11 @@ variable "name_update" {
   type        = string
 }
 
+variable "filter_prefixes" {
+  default     = []
+  description = "Filter object prefixes to trigger AV scan"
+  type        = list(string)
+}
 variable "cloudwatch_logs_retention_days" {
   default     = 90
   description = "Number of days to keep logs in AWS CloudWatch."
